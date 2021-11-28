@@ -103,8 +103,12 @@
                           searched:
                             item.searchPhrase.findIndex(v => v.value != '') > -1
                         }"
-                        >{{ item.name }}</span
-                      >
+                        >
+                        <span v-if="item.isHtml" v-html="item.name"></span>
+<!--                        <dynamic v-else-if="item.isTemplate" v-bind:template="item.name"></dynamic>-->
+                            <v-runtime-template v-else-if="item.isTemplate" :template="item.name"/>
+                        <span v-else v-html="item.name"></span>
+                      </span>
                       <span
                         v-else
                         :class="{
@@ -166,8 +170,12 @@
                             item.filterSelectedOptions &&
                             item.filterSelectedOptions.length
                         }"
-                        >{{ item.name }}</span
-                      >
+                        >
+                        <span v-if="item.isHtml" v-html="item.name"></span>
+<!--                        <dynamic v-else-if="item.isTemplate" v-bind:template="item.name"></dynamic>-->
+                            <v-runtime-template v-else-if="item.isTemplate" :template="item.name"/>
+                        <span v-else v-html="item.name"></span>
+                      </span>
                       <span
                         v-else
                         :class="{
@@ -248,8 +256,12 @@
                         :class="{
                           numFiltered: item.numberFilterPhrase.value[0] !== ''
                         }"
-                        >{{ item.name }}</span
-                      >
+                        >
+                        <span v-if="item.isHtml" v-html="item.name"></span>
+<!--                        <dynamic v-else-if="item.isTemplate" v-bind:template="item.name"></dynamic>-->
+                            <v-runtime-template v-else-if="item.isTemplate" :template="item.name"/>
+                        <span v-else v-html="item.name"></span>
+                      </span>
                       <span
                         v-else
                         :class="{
@@ -268,8 +280,12 @@
                         item.filterSelectedOptions &&
                         item.filterSelectedOptions.length
                     }"
-                    >{{ item.name }}</span
-                  >
+                    >
+                        <span v-if="item.isHtml" v-html="item.name"></span>
+<!--                        <dynamic v-else-if="item.isTemplate" v-bind:template="item.name"></dynamic>-->
+                        <v-runtime-template v-else-if="item.isTemplate" :template="item.name"/>
+                        <span v-else v-html="item.name"></span>
+                  </span>
                   <span
                     v-else
                     :class="{
@@ -592,6 +608,48 @@ import BaseIcon from "./components/base-icon.vue";
 import "vue-resize/dist/vue-resize.css";
 import { _uuid, exportCsv, deepCopy, debounce } from "./utils/index.js";
 import { VPopover } from "v-tooltip";
+import VRuntimeTemplate from "v-runtime-template";
+
+// var dynamic = {
+//   props: ['template'],
+//   data() {
+//     return {
+//       templateRender: null,
+//     };
+//   },
+//   render(h) {
+//     if (!this.templateRender) {
+//       return h('div', 'loading...');
+//     } else { // If there is a template, I'll show it
+//       return this.templateRender();
+//     }
+//   },
+//   watch: {
+//     // Every time the template prop changes, I recompile it to update the DOM
+//     template:{
+//       immediate: true, // makes the watcher fire on first render, too.
+//       handler() {
+//         var res = vue.compile(this.template);
+//
+//         this.templateRender = res.render;
+//
+//         // staticRenderFns belong into $options,
+//         // appearantly
+//         this.$options.staticRenderFns = []
+//
+//         // clean the cache of static elements
+//         // this is a cache with the results from the staticRenderFns
+//         this._staticTrees = []
+//
+//         // Fill it with the new staticRenderFns
+//         for (var i in res.staticRenderFns) {
+//           //staticRenderFns.push(res.staticRenderFns[i]);
+//           this.$options.staticRenderFns.push(res.staticRenderFns[i])
+//         }
+//       }
+//     }
+//   },
+// };
 
 export default {
   name: "VueVirtualTable",
@@ -608,7 +666,9 @@ export default {
     BaseCheckgroup,
     BaseTooltip,
     BaseIcon,
-    VPopover
+    VPopover,
+    VRuntimeTemplate,
+    // dynamic
   },
   props: {
     config: {

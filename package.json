@@ -37,6 +37,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
+    "v-runtime-template": "^1.10.0",
     "v-tooltip": "2.0.2",
     "vue-observe-visibility": "^0.4.3",
     "vue-resize": "^0.4.5"
